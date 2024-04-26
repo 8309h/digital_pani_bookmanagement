@@ -38,6 +38,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Routes
 app.use('/api/auth', UserRouter);
+app.use('/api/books',BookRouter)
 app.get('/admin', authorization(['admin']), (req, res) => {
     res.json({ message: 'Admin access granted' });
   });
