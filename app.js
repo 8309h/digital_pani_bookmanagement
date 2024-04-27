@@ -21,38 +21,36 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Books Store API',
+      title: 'Books Store Documentation!',
       version: '1.0.0',
-      description: 'API documentation for managing books',
+      description: 'API documentation generated with Swagger',
     },
     servers: [
       {
-        url: process.env.BASE_URL || 'http://localhost:3000',
+        url: baseURL,
         description: 'Development server',
       },
     ],
   },
   apis: ['./routes/*.js'], 
 };
+
 // Generate Swagger specifications
 const specs = swaggerJsdoc(options);
-
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Middleware
 app.use(cors()); 
 app.use(bodyParser.json());
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-
 // Routes
-app.get('/', (req, res) => {
+app.get(`/${baseURL}`, (req, res) => {
   res.send('Wel-come to the Book Store!');
 });
 
 // app.use('/api/user', UserRouter);
-app.use(`${baseURL}/api/user`, UserRouter);
-app.use(`${baseURL}/api/books`, authentication, BookRouter);
+app.use('/api/user', UserRouter);
+app.use('/api/books', authentication, BookRouter);
 
 
 
