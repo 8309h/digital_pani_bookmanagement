@@ -5,7 +5,7 @@ const BookModel = require('../models/bookModel');
 const createBook = async (req, res) => {
     try {
       const { title, author, publicationYear } = req.body;
-      const newBook = new BookModel({ title, author, publicationYear });
+      const newBook = new BookModel({ title, author, publicationYear});
       await newBook.save();
       res.status(201).json({ message: 'Book created successfully', book: newBook });
     } catch (error) {

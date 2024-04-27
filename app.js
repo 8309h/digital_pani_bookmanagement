@@ -1,48 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/db'); 
+const cors = require('cors'); // Import cors package
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const UserRouter = require('./routes/userRouter'); 
 const BookRouter = require('./routes/bookRouter');
-const authentication = require('./middleware/authentication') 
-const authorization  =  require('./middleware/authorization')
+const authentication = require('./middleware/authentication');
+const authorization = require('./middleware/authorization');
+
+const baseURL = process.env.BASE_URL || 'http://localhost:3000';
+
 
 require('dotenv').config();
 
 const app = express();
-
-/**
- * @swagger
- * /register:
- *   post:
- *     summary: Register a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               username:
- *                 type: string
- *               password:
- *                 type: string
- *     responses:
- *       '201':
- *         description: User created successfully
- *       '400':
- *         description: User already exists or bad request
- *       '500':
- *         description: Internal server error
- */
-
-
-
-
 
 // Define Swagger options
 const options = {
@@ -55,7 +27,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://digital-pani-bookmanagement-2.onrender.com/',
+        url: baseURL,
         description: 'Development server',
       },
     ],
@@ -63,41 +35,30 @@ const options = {
   apis: ['./routes/*.js'], 
 };
 
-
-
 // Generate Swagger specifications
 const specs = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // Middleware
+app.use(cors()); 
 app.use(bodyParser.json());
 
-const deployapi = "https://digital-pani-bookmanagement-2.onrender.com";
-
-
 // Routes
-
-app.get(`/${deployapi}/home` , (req, res) => {
-
- res.send("Home page")
- 
+app.get('/', (req, res) => {
+  res.send('Wel-come to the Book Store!');
 });
 
-app.use(`${deployapi}/user`, UserRouter);
-app.use('/api/books',authentication,BookRouter)
+// app.use('/api/user', UserRouter);
+app.use(`${baseURL}/api/user`, UserRouter);
+app.use('/api/books', authentication, BookRouter);
 
-app.get('/admin', authorization(['admin']), (req, res) => {
-    res.json({ message: 'Admin access granted' });
-  });
 
 
 app.listen(process.env.PORT, async () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+  console.log(`Server is running on port ${process.env.PORT || 3000}`);
   try {
     await connectDB(); 
   } catch (error) {
     console.log(error);
-    
   }
 });
-
