@@ -1,6 +1,6 @@
 const express = require('express');
 const BookRouter = express.Router();
-const { createBook, getAllBooks, getBookById,updateBookById, deleteBookById, filterBooksByAuthor, filterBooksByYear,getByAuthorName } = require('../controllers/bookController');
+const { createBook, getAllBooks, getBookById,updateBookById, deleteBookById,getbook} = require('../controllers/bookController');
 
 // Create a new book
 BookRouter.post('/', createBook);
@@ -17,14 +17,8 @@ BookRouter.put('/:id', updateBookById);
 BookRouter.delete('/:id', deleteBookById);
 
 
-// get book by author name 
-BookRouter.get('/:author',getByAuthorName)
-
-// filter by auther 
-BookRouter.get('/books/filter/by-author', filterBooksByAuthor)
-
-// filter by year
-BookRouter.get('/:year',filterBooksByYear)
+// for getting all book
+BookRouter.get("/allbook",getbook)
 
 module.exports = BookRouter;
 // Aravind Adiga
