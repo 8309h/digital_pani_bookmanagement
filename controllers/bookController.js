@@ -81,7 +81,7 @@ const deleteBookById = async (req, res) => {
 const getByAuthorName = async(req,res)=> {
   try {
     const author = req.params.author;
-    const book =  await BookModel.find({author});
+    const book =  await BookModel.find({"author":author});
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
