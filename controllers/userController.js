@@ -5,7 +5,7 @@ const UserModel = require('../models/userModel');
 // Register a new user
 const registerUser = async (req, res) => {
   try {
-    const { email, username, password } = req.body;
+    const { email, username, password} = req.body;
 
     // Check if user already exists
     let existingUser = await UserModel.findOne({ $or: [{ email }, { username }] });
@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
     const newUser = new UserModel({
       email,
       username,
-      password,
+      password
     });
 
     // Hash password

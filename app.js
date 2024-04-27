@@ -55,7 +55,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
+        url: 'https://digital-pani-bookmanagement-2.onrender.com/',
         description: 'Development server',
       },
     ],
@@ -72,17 +72,24 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 // Middleware
 app.use(bodyParser.json());
 
+const deployapi = "https://digital-pani-bookmanagement-2.onrender.com";
+
 
 // Routes
-app.use('/api/auth', UserRouter);
+
+app.get(`/${deployapi}/home` , (req, res) => {
+
+ res.send("Home page")
+ 
+});
+
+app.use(`${deployapi}/user`, UserRouter);
 app.use('/api/books',authentication,BookRouter)
+
 app.get('/admin', authorization(['admin']), (req, res) => {
     res.json({ message: 'Admin access granted' });
   });
 
-app.get('/', (req, res) => {
-    res.send('Wel-Come to BookAPI Store!')
-});
 
 app.listen(process.env.PORT, async () => {
   console.log(`Server is running on port ${process.env.PORT}`);
@@ -90,6 +97,7 @@ app.listen(process.env.PORT, async () => {
     await connectDB(); 
   } catch (error) {
     console.log(error);
+    
   }
 });
 

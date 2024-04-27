@@ -77,8 +77,23 @@ const deleteBookById = async (req, res) => {
   }
 };
 
-// Filter Book by Author
+// get bu author name
+const getByAuthorName = async(req,res)=> {
+  try {
+    const author = req.params.author;
+    const book =  await BookModel.find({author});
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.status(200).json({ message: 'Book Get Succesfully', book });
+  }catch(error){
+    console.error('Error getting books by author:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
 
+  }
+}
+
+// Filter Book by Author
 const filterBooksByAuthor = async (req, res) => {
   try {
     console.log("hii",req.query)
@@ -87,7 +102,7 @@ const filterBooksByAuthor = async (req, res) => {
     const pageSize = 5;
     const startIndex = (page - 1) * pageSize;
 
-    const books = await BookModel.find({ author })
+    const books = await BookModel.find({"author":author})
       .skip(startIndex)
       .limit(pageSize);
 
@@ -119,4 +134,4 @@ const filterBooksByYear = async (req, res) => {
   }
 };
   
-module.exports = {createBook, getAllBooks, getBookById,  updateBookById, deleteBookById, filterBooksByAuthor, filterBooksByYear };
+module.exports = {createBook, getAllBooks, getBookById,  updateBookById, deleteBookById, filterBooksByAuthor, filterBooksByYear,getByAuthorName };
