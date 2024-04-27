@@ -77,11 +77,20 @@ const deleteBookById = async (req, res) => {
   }
 };
 
-// Filter books by author
+// Filter Book by Author
+
 const filterBooksByAuthor = async (req, res) => {
   try {
-    const author = req.params.author;
-    const books = await BookModel.find({ author });
+    console.log("hii",req.query)
+    const { author, page } = req.query;
+
+    const pageSize = 5;
+    const startIndex = (page - 1) * pageSize;
+
+    const books = await BookModel.find({ author })
+      .skip(startIndex)
+      .limit(pageSize);
+
     res.status(200).json(books);
   } catch (error) {
     console.error('Error filtering books by author:', error.message);
@@ -89,16 +98,25 @@ const filterBooksByAuthor = async (req, res) => {
   }
 };
 
-// Filter books by publication year
+
+
+// Filter by Year
 const filterBooksByYear = async (req, res) => {
   try {
-    const year = req.params.year;
-    const books = await BookModel.find({ publicationYear: year });
+    const year = req.query.year;
+    const page = parseInt(req.query.page) || 1;
+    const limit = 5;
+    const startIndex = (page - 1) * limit;
+
+    const books = await BookModel.find({ publicationYear: year })
+      .skip(startIndex)
+      .limit(limit);
+
     res.status(200).json(books);
   } catch (error) {
     console.error('Error filtering books by year:', error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
+  
 module.exports = {createBook, getAllBooks, getBookById,  updateBookById, deleteBookById, filterBooksByAuthor, filterBooksByYear };

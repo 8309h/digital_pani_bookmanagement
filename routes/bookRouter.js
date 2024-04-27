@@ -17,9 +17,10 @@ BookRouter.put('/:id', updateBookById);
 BookRouter.delete('/:id', deleteBookById);
 
 // filter by auther 
-BookRouter.get('/:author',filterBooksByAuthor)
+BookRouter.get('/books/filter/by-author',filterBooksByAuthor)
 
 // filter by year
 BookRouter.get('/:year',filterBooksByYear)
 
 module.exports = BookRouter;
+// Aravind Adiga
