@@ -50,7 +50,7 @@ app.get('/', (req, res) => {
 
 // app.use('/api/user', UserRouter);
 app.use(`${baseURL}/api/user`, UserRouter);
-app.use('/api/books', authentication, BookRouter);
+app.use(`${baseURL}/api/books`, authentication, BookRouter);
 
 
 
