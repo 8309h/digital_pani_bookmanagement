@@ -44,7 +44,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-app.get(`${baseURL}`, (req, res) => {
+app.get("/", (req, res) => {
   res.send('Wel-come to the Book Store!');
 });
 
