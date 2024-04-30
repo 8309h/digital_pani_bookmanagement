@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/db'); 
-const cors = require('cors'); // Import cors package
+const cors = require('cors'); 
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const UserRouter = require('./routes/userRouter'); 
@@ -49,7 +49,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/user', UserRouter);
-app.use('/api/books', authentication, BookRouter);
+app.use('/api/books', authentication,BookRouter);
 
 
 
